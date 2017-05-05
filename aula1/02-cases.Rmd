@@ -1,5 +1,6 @@
 
 - Câmaras criminais: http://www1.folha.uol.com.br/cotidiano/2015/10/1698478-estudo-indica-que-camara-do-tribunal-de-justica-paulista-mais-nega-recurso.shtml
+- http://curso.abj.org.br
 - https://abjur.github.io/tjspBook/
 - http://rpubs.com/abj/gis
 - http://shiny.platipus.com.br:3838/platipus/tjsp_app
