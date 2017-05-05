@@ -11,9 +11,17 @@ Pesquisas em andamento
 
 - Maiores litigantes
 - Improbidade administrativa
+- Cível e trabalhista
+    - diagramas de influência em jurimetria
+- Tributário
+    - Decisões do CARF
 - Waze v2
 - Projeto educação
 - Criminal
+    - taxa de esclarecimento de homicídios - com ISDP
+    - prazos no STJ - com CRISP
+    - Determinantes das decisões judiciais - com José de Jesus Filho
+    - Convênio aberto com MPSP
 - Quebra de captchas
 
 ```{r}
