@@ -13,6 +13,8 @@ Pesquisas em andamento
 - Improbidade administrativa
 - Cível e trabalhista
     - diagramas de influência em jurimetria
+    - observatório da insolvência
+    - gratuidade judiciária
 - Tributário
     - Decisões do CARF
 - Waze v2
