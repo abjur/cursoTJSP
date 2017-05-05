@@ -1,0 +1,141 @@
+# Ferramental de trabalho da ABJ
+
+As bases de dados utilizadas em estudos jurimétricos 
+foram originalmente concebidas para fins gerenciais e não analíticos.
+Por isso, observamos muitos dados faltantes, 
+mal formatados e com documentação inadequada.
+Uma boa porção dos dados só está disponível em páginas HTML e arquivos PDF e 
+grande parte da informação útil está escondida em textos.
+
+Chamamos esse fenômeno de "pré-sal sociológico".
+Temos hoje diversas bases de dados armazenadas em repositórios públicos ou 
+controladas pelo poder público, mas que precisam ser lapidadas para 
+obtenção de informação útil.
+
+O jurimetrista trabalha com dados sujos e desorganizados, 
+mas gera muito valor ao extrair suas informações.
+Por isso, o profissional precisa dominar o ferramental  
+de extração, transformação e visualização de dados,
+e é sobre isso que discutiremos nesta primeira parte do curso.
+Utilizaremos como base o software estatístico `R`, 
+que atualmente possui diversas ferramentas que ajudam nessas atividades.
+
+
+# Ciência de dados
+
+# Papel do R
+
+![img1](https://www.rstudio.com/wp-content/uploads/2014/06/RStudio-Ball.png)
+
+# Fazendo ciência de dados
+
+![img2](https://raw.githubusercontent.com/hadley/r4ds/master/diagrams/data-science.png)
+
+
+# R e seus pacotes
+
+![img3](http://revolution-computing.typepad.com/.a/6a010534b1db25970b01a511dd3ba4970c-pi)
+
+# Tidyverse
+
+![img4](https://pbs.twimg.com/media/CvzEQcfWIAAIs-N.jpg)
+
+O universo arrumadinho
+
+# Princípios do tidyverse
+
+1. Integração com *workflow* para ciência de dados
+1. **Aparato mnemônico**. Pacotes baseados em teorias e formas de uso consistentes.
+1. **Eficiência algorítmica vs eficiência de trabalho**. O tempo gasto pensando em como realizar uma operação é mais importante do que o tempo que o computador gasta para realizar um cálculo.
+1. **Tidy data**. Princípio para arrumação de base de dados que resolve 90% dos problemas reais. 
+
+Base *tidy*:
+    - Cada observação é uma linha do bd.
+    - Cada variável é uma coluna do bd.
+    - Cada dado está numa célula do bd.
+
+# RMarkdown
+
+- Tipo de documento especial que contém tanto textos (em markdown) quanto códigos em R (em chunks). 
+    - Markdown: documento de texto com padrões básicos de formatação, como **negrito**, *itálico*, títulos, subtítulos, itemização e referências cruzadas.
+    - Chunks: pedaços de códigos em R.
+
+## Vantagens
+
+1. **Simplicidade e foco**. 
+1. **Versátil**.
+1. **Reprodutível**. 
+1. **Eficiente**.  
+
+Para detalhes sobre como utilizar o RMarkdown, [leia aqui](http://r4ds.had.co.nz/r-markdown.html) [e aqui](http://rmarkdown.rstudio.com/lesson-1.html).
+
+# GitHub
+
+- Maior plataforma online para compartilhar códigos. 
+- Utiliza o `git`, a melhor ferramenta de versionamento de software.
+
+**Vantagens**:
+
+1. Boa prática de organizar projetos pois mantém os códigos organizados e atualizados na web
+1. Projetos colaborativos: aumenta a produtividade e permite que pessoas de todo lugar ajudem nos projetos. 
+1. O `tidyverse` só é o que é hoje por conta do *social coding*.
+
+Para detalhes, faça o [data science toolbox](https://www.coursera.org/learn/data-scientists-tools).
+
+# Nosso curso
+
+- Nosso curso utiliza o `tidyverse`.
+- O melhor lugar para aprender sobre o `tidyverse` é no livro [R for data science](http://r4ds.had.co.nz).
+- Aqui abordamos partes do livro e adicionamos outros, como estudos de caso.
+- Material de R: [Curso-R Verão 2017](http://material.curso-r.com).
+
+-----------------------------------------------------
+
+# Plano:
+
+## **Aula 01** - 05/05: Introdução ao R, Rstudio e `tidyverse`
+
+```{r}
+matrix(1:10, ncol = 2)
+```
+
+
+## **Aula 02** - 12/05: Manipulação e visualização de dados
+
+```{r warning=F, message=F}
+library(dplyr)
+library(abjData)
+pnud_min %>% 
+  select(ano, regiao, idhm) %>% 
+  filter(ano == 2010) %>% 
+  group_by(regiao) %>% 
+  summarise(media = mean(idhm)) %>% 
+  arrange(desc(media)) %>% 
+  mutate(media = scales::percent(media))
+```
+
+
+```{r, fig.width=9}
+library(ggplot2)
+library(plotly)
+set.seed(1)
+p <- pnud_min %>% 
+  sample_n(500) %>% 
+  ggplot(aes(idhm_l, idhm_r, colour = regiao)) + 
+  geom_point(alpha = .4) +
+  geom_text(aes(label = muni), alpha = 0) +
+  geom_smooth(se = FALSE, method = 'loess') +
+  theme_bw(16) +
+  theme(legend.position = 'bottom')
+ggplotly(p)
+```
+
+## **Aula 03** - 19/05: Tópicos de modelagem e comunicação com o R.
+
+- Modelos lineares
+- QlikView
+- PowerBI
+- APIs
+
+-------------------------------------------------------------------
+

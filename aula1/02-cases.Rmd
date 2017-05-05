@@ -1,0 +1,20 @@
+
+- http://rpubs.com/abj/gis
+- http://shiny.platipus.com.br:3838/platipus/tjsp_app
+- http://shiny.platipus.com.br:3838/platipus/viscarf5
+- http://curso.abj.org.br/simulacao.html 
+- https://abjur.github.io/tjspBook/
+
+Pesquisas em andamento
+
+- Maiores litigantes
+- Improbidade administrativa
+- Waze v2
+- Projeto educação
+- Criminal
+- Quebra de captchas
+
+```{r}
+
+```
+
