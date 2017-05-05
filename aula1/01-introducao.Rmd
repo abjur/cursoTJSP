@@ -1,12 +1,24 @@
 # Plano:
 
+- Sobre a ABJ
 - Conceitos de Jurimetria
     - Definição
     - Esferas
     - Cases
     - Expectativas com o curso
 - Sobre ciência de dados / estatística
+- Introdução ao R
 
+
+
+
+
+
+
+
+
+
+------------------------------------------------
 
 # Definição de Jurimetria
 

@@ -1,9 +1,10 @@
 
+- Câmaras criminais: http://www1.folha.uol.com.br/cotidiano/2015/10/1698478-estudo-indica-que-camara-do-tribunal-de-justica-paulista-mais-nega-recurso.shtml
+- https://abjur.github.io/tjspBook/
 - http://rpubs.com/abj/gis
 - http://shiny.platipus.com.br:3838/platipus/tjsp_app
 - http://shiny.platipus.com.br:3838/platipus/viscarf5
 - http://curso.abj.org.br/simulacao.html 
-- https://abjur.github.io/tjspBook/
 
 Pesquisas em andamento
 
@@ -15,6 +16,35 @@ Pesquisas em andamento
 - Quebra de captchas
 
 ```{r}
-
+library(captchaTJRS)
+a <- download()
+a %>% ler %>% desenhar
 ```
+
+```{r, warning=FALSE, message=FALSE}
+a %>% predizer()
+```
+
+# Filosofia da ABJ
+
+- 100% open source
+- dados abertos
+- políticas públicas
+- associação
+- blog: http://abj.org.br
+
+## Códigos:
+
+https://github.com/abjur -> nossa página
+https://github.com/decryptr -> captchas
+https://github.com/courtsbr -> scrapers
+https://github.com/jtrecenti -> minha página pessoal
+
+## Cursos de R
+
+- http://material.curso-r.com -> material de aulas
+- http://curso-r.com -> blog
+- https://github.com/curso-r
+
+
 
