@@ -1,0 +1,157 @@
+# Objetos
+
+## Atomic
+
+Existem quatro classes atômicas no R:
+
+- logical `TRUE` (booleanos, TRUE/FALSE)
+- integer `100515` (inteiros)
+- numeric `0.95` (números reais)
+- character `"UAH!"` (é o varchar do SQL)
+
+```{r}
+w <- 1L
+x <- FALSE
+y <- 0.99
+z <- "hello"
+```
+
+## Vetores
+
+Vetores possuem elementos de uma e apenas uma classe.
+
+```{r}
+vetor1 <- c(1, 2, 3, 4)
+vetor2 <- c(0, 10)
+vetor_palavras <- c(10, "1000", "USP")
+class(vetor1)
+```
+
+Misturando classes diferentes
+
+```{r, eval=FALSE}
+y <- c(1.7, "a")  ## character
+y <- c(TRUE, 2)   ## numeric
+y <- c(TRUE, "a") ## character
+y <- c(TRUE, FALSE, 10)
+```
+
+**DOMINANTE** `character > numeric > integer > logical` **RECESSIVO**
+
+## Listas
+
+Trabalham com vários tipos de dados
+
+```{r}
+x <- list(1:5, b = "Z", c = TRUE, d = c("a", "b"), list(1:5))
+x
+```
+
+**Utilidades**
+
+```{r, eval=FALSE}
+x$b       # elemento chamado 'b'
+x[4]      # nova lista com apenas o quarto elemento
+x[[2]]    # segundo elemento
+x["c"]    # nova lista com apenas o elemento chamado 'c'
+```
+
+------------------------------------------------------------------
+
+# Funções
+
+Por que criar funções?
+
+- Evitar repetições
+- Facilitar alterações de códigos
+- Facilitar a interpretabilidade
+
+```{r}
+soma <- function(x, y = 0) {
+  resposta <- x + y
+  resposta
+  # return(resposta)
+}
+```
+
+A função acima tem 
+
+- o nome `soma`
+- os argumentos `x` e `y`
+- o corpo `resposta <- x + y`
+- o valor padrão `0` para o argumento `y` (`y = 0`)
+
+Para usá-la é como qualquer outra função:
+
+```{r}
+soma(2, 1) # soma de 2 + 1
+soma(2)    # soma de 2 + 0
+```
+
+-------------------------------------------------
+
+# Pipe `%>%`
+
+```{r}
+library(magrittr)
+```
+
+![](inputs/pipe.png)
+
+![](inputs/magritte.jpg)
+
+Considere o seguinte exemplo:
+
+```{r}
+x <- 1
+y <- 2
+```
+
+As duas linhas abaixo são equivalentes:
+
+```{r}
+soma(x, y)
+x %>% soma(y)
+```
+
+Exemplo: alcular raiz quadrada da soma dos valores de 1 a 4.
+
+```{r}
+x <- c(1, 2, 3, 4)
+x %>% sum() %>% sqrt()
+```
+
+Escrever esse cálculo na forma usual ficaria da seguinte forma:
+
+```{r}
+sqrt(sum(x))
+```
+
+## Receita de bolo
+
+Tente entender o que é preciso fazer. 
+
+```{r, eval=FALSE}
+
+esfrie(asse(coloque(bata(acrescente(recipiente(rep("farinha", 2), "água", "fermento", "leite", "óleo"), "farinha", até = "macio"), duração = "3min"), lugar = "forma", tipo = "grande", untada = TRUE), duração = "50min"), "geladeira", "20min")
+
+```
+
+Desistiu? Agora veja como fica escrevendo com o `%>%`:
+
+```{r, eval=FALSE}
+
+recipiente(rep("farinha", 2), "água", "fermento", "leite", "óleo") %>%
+  acrescente("farinha", até = "macio") %>%
+  bata(duraço = "3min") %>%
+  coloque(lugar = "forma", tipo = "grande", untada = TRUE) %>%
+  asse(duração = "50min") %>%
+  esfrie("geladeira", "20min")
+
+```
+
+Agora o código realmente parece uma receita de bolo.
+
+Para mais informações sobre o `pipe` e exemplos de utilização, visite a página [Ceci n'est pas un pipe](http://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html).
+
+-----------------------------------------------------------

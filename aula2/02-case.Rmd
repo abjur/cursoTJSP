@@ -1,0 +1,28 @@
+# Exemplo trabalhado
+
+## Câmaras do TJSP
+
+Uma das principais questões que surgem quando o tema é impunidade e que motivou esse trabalho é: quando um réu condenado deve começar a cumprir pena? A justiça deve esperar o encerramento definitivo do processo, com o chamado trânsito em julgado, ou pode iniciar o cumprimento já a partir de uma decisão terminativa, como a sentença ou o acórdão de segundo grau?
+
+Uma forma de solucionar esse debate é calculando as taxas de reforma de decisões em matéria criminal. Uma condição necessária para a viabilidade da antecipação do cumprimento de pena é uma baixa taxa de reforma das decisões, pois uma taxa alta implicaria que muitas pessoas seriam presas injustamente.
+
+Com o objetivo de obter essas taxas, fizemos uma pesquisa usando como base de dados um levantamento de 157.379 decisões em segunda instância, das quais pouco menos de 60.000 envolvem apelações contra o Ministério Público, todas proferidas entre 01/01/2014 e 31/12/2014 nas dezesseis Câmaras de Direito Criminal, e nas quatro Câmaras Extraordinárias do Tribunal de Justiça de São Paulo. 
+
+Os resultados revelam taxas de reforma próximas a 50%. As taxas obtidas são relevantes e justificam a não antecipação do cumprimento de pena para a decisão em primeira instância.
+
+Para aprofundar a análise, realizamos análises para tipos específicos de crime, como roubo e tráfico de drogas, comparando as taxas de reforma em cada grupo. Também comparamos resultados relativamente às câmaras de julgamento e relatores.
+
+Observamos uma alta variabilidade na taxa de reforma entre as vinte câmaras. Encontramos câmaras com mais de 75% de recursos negados (quarta e sexta) e câmaras com menos de 30% de recursos negados (primeira, segunda e décima segunda). O resultado é contraintuitivo pois teoricamente a alocação de novos recursos nas câmaras é aleatória.
+
+No curso, vamos replicar o estudo das câmaras para 2015.
+
+```{r}
+library(tidyverse)
+d_cjsg <- read_rds('inputs/d_cjsg.rds')
+d_cjsg
+```
+
+## Resultados esperados
+
+
+

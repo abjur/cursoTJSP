@@ -1,0 +1,37 @@
+# Roteiro
+
+Semana passada:
+
+- Sobre a ABJ
+- Conceitos de Jurimetria
+    - Definição
+    - Esferas
+    - Cases
+    - Expectativas com o curso
+- Sobre ciência de dados / estatística
+- Introdução ao R
+
+--------------------------------------------------
+
+Hoje:
+
+- Motivação
+    - Replicação do projeto das câmaras
+- Finalizando ferramental básico
+    - Tipos de objetos
+    - Funções
+    - Pipe
+- Transformação de dados com `dplyr` e `tidyr`
+    - Princípios de data tidying
+    - Os cinco verbos do `dplyr`
+    - `gather` e `spread`
+- Visualização de dados com `ggplot2`
+    - teoria sobre gráficos estatísticos
+    - principais geoms
+        - dispersão
+        - histograma
+        - boxplot
+        - barras
+    - facets
+    - temas
+- (se der tempo) analisando textos com `stringr`
