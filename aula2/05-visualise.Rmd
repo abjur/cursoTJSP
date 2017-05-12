@@ -6,7 +6,7 @@ knitr::opts_chunk$set(fig.width = 9)
 
 Por quê visualizar dados?
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 datasaurus <- read_tsv('inputs/DatasaurusDozen.tsv')
 ```
