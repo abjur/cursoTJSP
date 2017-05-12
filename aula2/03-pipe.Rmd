@@ -5,7 +5,7 @@
 Existem quatro classes atômicas no R:
 
 - logical `TRUE` (booleanos, TRUE/FALSE)
-- integer `100515` (inteiros)
+- integer `100515L` (inteiros)
 - numeric `0.95` (números reais)
 - character `"UAH!"` (é o varchar do SQL)
 
@@ -21,19 +21,15 @@ z <- "hello"
 Vetores possuem elementos de uma e apenas uma classe.
 
 ```{r}
-vetor1 <- c(1, 2, 3, 4)
-vetor2 <- c(0, 10)
-vetor_palavras <- c(10, "1000", "USP")
-class(vetor1)
-```
-
-Misturando classes diferentes
-
-```{r, eval=FALSE}
-y <- c(1.7, "a")  ## character
-y <- c(TRUE, 2)   ## numeric
-y <- c(TRUE, "a") ## character
+y <- c(1L, 2L, 3L, 4L)
+y <- c(0L, 10)
+y <- c(10, "1000", "USP")
+y <- c(1.7, "a")
+y <- c(TRUE, 2)
+y <- c(TRUE, "a")
 y <- c(TRUE, FALSE, 10)
+
+class(y)
 ```
 
 **DOMINANTE** `character > numeric > integer > logical` **RECESSIVO**
@@ -60,17 +56,10 @@ x["c"]    # nova lista com apenas o elemento chamado 'c'
 
 # Funções
 
-Por que criar funções?
-
-- Evitar repetições
-- Facilitar alterações de códigos
-- Facilitar a interpretabilidade
-
 ```{r}
 soma <- function(x, y = 0) {
   resposta <- x + y
   resposta
-  # return(resposta)
 }
 ```
 
@@ -100,7 +89,20 @@ library(magrittr)
 
 ![](inputs/magritte.jpg)
 
-Considere o seguinte exemplo:
+Exemplo: calcular raiz quadrada da soma dos valores de 1 a 4.
+
+```{r}
+x <- c(1, 2, 3, 4)
+x %>% sum() %>% sqrt()
+```
+
+Escrever esse cálculo na forma usual ficaria da seguinte forma:
+
+```{r}
+sqrt(sum(x))
+```
+
+Outro exemplo:
 
 ```{r}
 x <- 1
@@ -114,18 +116,7 @@ soma(x, y)
 x %>% soma(y)
 ```
 
-Exemplo: alcular raiz quadrada da soma dos valores de 1 a 4.
-
-```{r}
-x <- c(1, 2, 3, 4)
-x %>% sum() %>% sqrt()
-```
-
-Escrever esse cálculo na forma usual ficaria da seguinte forma:
-
-```{r}
-sqrt(sum(x))
-```
+Mas então, pra que serve o pipe?
 
 ## Receita de bolo
 
@@ -136,6 +127,12 @@ Tente entender o que é preciso fazer.
 esfrie(asse(coloque(bata(acrescente(recipiente(rep("farinha", 2), "água", "fermento", "leite", "óleo"), "farinha", até = "macio"), duração = "3min"), lugar = "forma", tipo = "grande", untada = TRUE), duração = "50min"), "geladeira", "20min")
 
 ```
+
+
+
+
+
+
 
 Desistiu? Agora veja como fica escrevendo com o `%>%`:
 
