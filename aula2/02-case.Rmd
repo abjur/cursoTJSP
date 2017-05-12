@@ -16,7 +16,7 @@ Observamos uma alta variabilidade na taxa de reforma entre as vinte câmaras. En
 
 No curso, vamos replicar o estudo das câmaras para 2015.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(lubridate)
 library(scales)
@@ -127,7 +127,8 @@ O terceiro mostra a proporção de cada tipo de decisão em cada câmara.
 ```{r fig.width=10, fig.height=5}
 p <- d_cjsg %>%
   mutate(n_processo = str_replace_all(n_processo, '[^0-9]', '')) %>% 
-  inner_join(decisoes, 'n_processo') %>% 
+  distinct(n_processo, .keep_all = TRUE) %>% 
+  inner_join(distinct(decisoes, .keep_all = TRUE), 'n_processo') %>% 
   count(orgao_julgador, tipo_decisao) %>%
   mutate(ntot = sum(n), prop = n / ntot) %>%
   ungroup() %>%
