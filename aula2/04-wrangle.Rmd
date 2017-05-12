@@ -49,6 +49,7 @@ Uma `tibble` nada mais é do que um `data.frame`, mas com um método de impress�
 ---------------------------------------------------
 
 ```{r}
+library(tidyverse)
 d_cjsg <- readRDS('inputs/d_cjsg.rds')
 ```
 
@@ -119,7 +120,7 @@ d_cjsg %>%
 ```{r}
 d_cjsg %>% 
   select(comarca, data_julgamento) %>% 
-  filter(str_detect(comarca, '^[gG]'))
+  filter(str_detect(comarca, '^[HG]'))
 ```
 
 ---------------------------------------------------

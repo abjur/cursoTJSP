@@ -1,5 +1,9 @@
 # Visualização
 
+```{r}
+knitr::opts_chunk$set(fig.width = 9)
+```
+
 Por quê visualizar dados?
 
 ```{r}
@@ -93,25 +97,25 @@ knitr::include_graphics('inputs/mrpotatohead.jpg')
 
 Base gráfica
 
-```{r}
+```{r, fig.width=9}
 ggplot(cars)
 ```
 
 Criando grids: eixo x
 
-```{r}
+```{r, fig.width=9}
 ggplot(cars, aes(x = speed))
 ```
 
 Criando grids: eixos x e y
 
-```{r}
+```{r, fig.width=9}
 ggplot(cars, aes(x = speed, y = dist))
 ```
 
 Adicionando formas geométricas
 
-```{r}
+```{r, fig.width=9}
 ggplot(cars, aes(x = speed, y = dist)) +
   geom_point()
 ```
@@ -122,32 +126,126 @@ ggplot(cars, aes(x = speed, y = dist)) +
 
 ## Gráfico de barras
 
+```{r}
+d_barras <- d_cjsg %>% 
+  group_by(comarca) %>% 
+  filter(n() >= 3000) %>% 
+  ungroup()
+```
+
+```{r, fig.width=9}
+d_barras %>% 
+  ggplot(aes(x = comarca)) +
+  geom_bar()
+```
+
+### Arrumando as labels
+
+```{r, fig.width=9}
+d_barras %>% 
+  ggplot(aes(x = comarca)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
 ### Reordenando os níveis
+
+```{r, fig.width=9}
+d_barras %>% 
+  mutate(comarca = fct_infreq(comarca)) %>% 
+  ggplot(aes(x = comarca)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### Temas e labels
+
+```{r, fig.width=9}
+d_barras %>% 
+  mutate(comarca = fct_infreq(comarca)) %>% 
+  ggplot(aes(x = comarca)) +
+  geom_bar() +
+  theme_bw(16) +
+  labs(x = 'Comarca', y = 'Volume processual') +
+  ggtitle(label = 'Volume processual por comarca',
+          subtitle = 'Considerando somente comarcas com mais de 3000 processos') +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
 ## Histograma
 
+```{r}
+d_tempo <- d_cjsg %>% 
+  mutate(ano_julgamento = year(dmy(data_julgamento)),
+         ano_proc = str_sub(n_processo, 12, 15),
+         ano_proc = as.numeric(ano_proc),
+         tempo_anos = ano_julgamento - ano_proc) %>% 
+  filter(ano_proc >= 2000)
+```
+
+```{r, fig.width=9}
+d_tempo %>% 
+  ggplot(aes(x = tempo_anos)) +
+  geom_histogram()
+```
+
 ### Arrumando o número de classes
+
+```{r, fig.width=9}
+d_tempo %>% 
+  ggplot(aes(x = tempo_anos)) +
+  geom_histogram(binwidth = 1)
+```
 
 ### Mudando a cor
 
+```{r, fig.width=9}
+d_tempo %>% 
+  ggplot(aes(x = tempo_anos)) +
+  geom_histogram(binwidth = 1, fill = 'royalblue', colour = 'black') +
+  theme_bw(16)
+```
+
+### Mudando a escala
+
+```{r, fig.width=9}
+d_tempo %>% 
+  ggplot(aes(x = tempo_anos)) +
+  geom_histogram(binwidth = 1, fill = 'royalblue', colour = 'black') +
+  scale_x_continuous(breaks = 0:5 * 3) +
+  labs(x = 'Tempo (anos)', y = 'Volume processual') +
+  ggtitle('Distribuição dos tempos dos processos',
+          subtitle = 'usando como critério o número CNJ e a data da decisão.') +
+  theme_bw(16)
+```
+
 ## Boxplot
 
-## Gráfico de dispersão
+```{r, fig.width=9}
+d_tempo2 <- d_tempo %>% 
+  group_by(comarca) %>% 
+  filter(n() > 2000) %>% 
+  ungroup()
+```
 
-### Ordenando pela mediana
+```{r, fig.width=9}
+d_tempo2 %>% 
+  ggplot(aes(x = comarca, y = tempo_anos)) +
+  geom_boxplot()
+```
 
-----------------------------------------------------------
+### Ordenando pela média
 
-# Temas
+```{r, fig.width=9}
+medias <- d_tempo2 %>% 
+  group_by(comarca) %>% 
+  summarise(tempo_anos = mean(tempo_anos))
 
-## Labels
-
-## Arrumando labels do eixo x
-
-----------------------------------------------------------
-
-# Facets
-
-
-----------------------------------------------------------
-
+d_tempo2 %>% 
+  mutate(comarca = fct_reorder(comarca, tempo_anos, mean)) %>% 
+  ggplot(aes(x = comarca, y = tempo_anos)) +
+  geom_boxplot() +
+  geom_point(data = medias, size = 3, colour = 'royalblue') +
+  theme_bw(16) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
