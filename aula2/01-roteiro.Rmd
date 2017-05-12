@@ -10,8 +10,18 @@ Semana passada:
     - Expectativas com o curso
 - Sobre ciência de dados / estatística
 - Introdução ao R
+    - RStudio
+    - projetos
+    - calculadora
+    - pedindo ajuda
+    - instalando pacotes
+    - if, else, for.
 
 --------------------------------------------------
+
+```{r transform, echo=FALSE, fig.width=9}
+knitr::include_graphics('inputs/data-science-wrangle.png')
+```
 
 Hoje:
 
