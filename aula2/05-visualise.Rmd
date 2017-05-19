@@ -24,13 +24,13 @@ datasaurus %>%
 
 Gráficos de dispersão
 
-```{r, fig.height=6, fig.width=8}
+```{r, fig.height=5, fig.width=8}
 datasaurus %>% 
   filter(dataset != 'v_lines') %>% 
   ggplot(aes(x, y)) +
   geom_point() +
   facet_wrap(~dataset) +
-  theme_minimal()
+  theme_minimal(0)
 ```
 
 ----------------------------------------------------------

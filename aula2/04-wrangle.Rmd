@@ -59,10 +59,10 @@ d_cjsg <- readRDS('inputs/d_cjsg.rds')
 
 ## Os cinco verbos do `dplyr`
 
-- `filter`: filtrar linhas.
-- `select`: selecionar colunas.
-- `mutate`: criar/modificar colunas.
 - `arrange`: ordenar a base.
+- `select`: selecionar colunas.
+- `filter`: filtrar linhas.
+- `mutate`: criar/modificar colunas.
 - `summarise`: sumarizar a base em uma linha.
 
 ### Características e vantagens
@@ -71,6 +71,23 @@ d_cjsg <- readRDS('inputs/d_cjsg.rds')
 - No primeiro argumento colocamos o `tibble`, e nos outros argumentos colocamos o que queremos fazer.
 - A utilização é facilitada com o emprego do operador `%>%`.
 - Pode trabalhar com diferentes fontes de dados, como bases relacionais (SQL).
+
+---------------------------------------------------
+
+## `arrange`
+
+- Simplesmente ordena de acordo com as opções.
+- Utilizar `desc` para ordem decrescente.
+
+```{r}
+d_cjsg %>% 
+  select(id, n_processo, data_julgamento) %>% 
+  mutate(ano_julgamento = year(dmy(data_julgamento)),
+         ano_proc = str_sub(n_processo, 12, 15),
+         ano_proc = as.numeric(ano_proc)) %>% 
+  mutate(tempo_anos = ano_julgamento - ano_proc) %>% 
+  arrange(desc(tempo_anos))
+```
 
 ---------------------------------------------------
 
@@ -139,24 +156,6 @@ d_cjsg %>%
          tempo_anos = ano_julgamento - ano_proc)
 ```
 
-
----------------------------------------------------
-
-## `arrange`
-
-- Simplesmente ordena de acordo com as opções.
-- Utilizar `desc` para ordem decrescente.
-
-```{r}
-d_cjsg %>% 
-  select(id, n_processo, data_julgamento) %>% 
-  mutate(ano_julgamento = year(dmy(data_julgamento)),
-         ano_proc = str_sub(n_processo, 12, 15),
-         ano_proc = as.numeric(ano_proc)) %>% 
-  mutate(tempo_anos = ano_julgamento - ano_proc) %>% 
-  arrange(desc(tempo_anos))
-```
-
 ---------------------------------------------------
 
 ## `summarise`
@@ -203,10 +202,6 @@ d_cjsg %>%
 
 ```{r warning=FALSE, message=FALSE}
 d_cjsg %>% 
-  filter(comarca %in% c('São Paulo', 'Guarulhos'))
-
-
-d_cjsg %>% 
   select(cd_acordao:data_registro) %>% 
   gather(key, value, -cd_acordao) %>% 
   arrange(cd_acordao)
@@ -223,6 +218,12 @@ d_cjsg %>%
   select(cd_acordao:data_registro) %>% 
   gather(key, value, -cd_acordao) %>% 
   spread(key, value)
+
+d_cjsg %>% 
+  mutate(ano = year(dmy(data_registro))) %>% 
+  count(comarca, ano) %>%
+  ungroup() %>% 
+  spread(ano, n, fill = 0, sep = '_')
 ```
 
 -----------------------------------------------------
