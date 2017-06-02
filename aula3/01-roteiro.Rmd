@@ -21,7 +21,6 @@ Semana passada:
         - barras
     - facets
     - temas
-- (se der tempo) analisando textos com `stringr`
 
 --------------------------------------------------
 
@@ -35,13 +34,12 @@ Hoje:
     - readr e `data.table::fread()` para dados em texto
     - haven para SAS, SPSS e Stata
     - readxl, openxlsx
-- SQL, mongodb, spark
+- SQL
 - Conectando o R
     - powerBI, QlikView
-- Outros outputs com RMarkdown
-    - Estáticos
-        - word
-        - pdf
+- Outputs com RMarkdown
+    - word
+    - pdf
 - htmlwidgets
     - plotly
     - leaflet
