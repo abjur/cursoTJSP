@@ -1,0 +1,161 @@
+---
+title: "Câmaras do TJSP"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+# Exemplo trabalhado
+
+## Câmaras do TJSP
+
+Uma das principais questões que surgem quando o tema é impunidade e que motivou esse trabalho é: quando um réu condenado deve começar a cumprir pena? A justiça deve esperar o encerramento definitivo do processo, com o chamado trânsito em julgado, ou pode iniciar o cumprimento já a partir de uma decisão terminativa, como a sentença ou o acórdão de segundo grau?
+
+Uma forma de solucionar esse debate é calculando as taxas de reforma de decisões em matéria criminal. Uma condição necessária para a viabilidade da antecipação do cumprimento de pena é uma baixa taxa de reforma das decisões, pois uma taxa alta implicaria que muitas pessoas seriam presas injustamente.
+
+Com o objetivo de obter essas taxas, fizemos uma pesquisa usando como base de dados um levantamento de 157.379 decisões em segunda instância, das quais pouco menos de 60.000 envolvem apelações contra o Ministério Público, todas proferidas entre 01/01/2014 e 31/12/2014 nas dezesseis Câmaras de Direito Criminal, e nas quatro Câmaras Extraordinárias do Tribunal de Justiça de São Paulo. 
+
+Os resultados revelam taxas de reforma próximas a 50%. As taxas obtidas são relevantes e justificam a não antecipação do cumprimento de pena para a decisão em primeira instância.
+
+Para aprofundar a análise, realizamos análises para tipos específicos de crime, como roubo e tráfico de drogas, comparando as taxas de reforma em cada grupo. Também comparamos resultados relativamente às câmaras de julgamento e relatores.
+
+Observamos uma alta variabilidade na taxa de reforma entre as vinte câmaras. Encontramos câmaras com mais de 75% de recursos negados (quarta e sexta) e câmaras com menos de 30% de recursos negados (primeira, segunda e décima segunda). O resultado é contraintuitivo pois teoricamente a alocação de novos recursos nas câmaras é aleatória.
+
+No curso, vamos replicar o estudo das câmaras para 2015.
+
+```{r pacotes, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(lubridate)
+library(forcats)
+library(stringr)
+library(scales)
+```
+
+## Resultados esperados
+
+```{r leitura}
+d_cjsg <- read_rds('../aula2/inputs/d_cjsg.rds')
+d_decisoes <- read_rds('../aula2/inputs/d_decisoes.rds')
+d_partes <- read_rds('../aula2/inputs/d_partes.rds')
+d_cposg <- read_rds('../aula2/inputs/d_cposg.rds')
+```
+
+No exemplo das câmaras, vamos fazer três gráficos.
+O primeiro mostra a proporção de processos por assunto em cada câmara.
+
+```{r graf1, warning=FALSE, fig.width=10}
+p <- d_cjsg %>%
+  separate(classe_assunto, c('classe', 'assunto'), sep = ' / ', 
+           extra = 'merge', fill = 'right') %>% 
+  mutate(assunto = fct_lump(assunto, 11)) %>% 
+  count(orgao_julgador, assunto) %>%
+  mutate(ntot = sum(n), prop = n / ntot) %>%
+  ungroup() %>%
+  filter(ntot > 1000) %>% 
+  mutate(num = parse_number(orgao_julgador),
+         num = sprintf('%02d', num)) %>% 
+  mutate(extra = str_detect(orgao_julgador, 'Extra'),
+         extra = ifelse(extra, 'Câmara Extraordinária', 
+                        'Câmara de Direito Criminal')) %>% 
+  ggplot(aes(x = num, fill = str_wrap(assunto, 20), y = prop)) +
+  geom_bar(stat = 'identity', colour = 'black') +
+  facet_wrap(~extra, scales = 'free_x') +
+  theme_bw(16) +
+  scale_y_continuous(labels = percent) +
+  labs(x = 'Órgão julgador', 
+       y = 'Proporção de processos por assunto',
+       fill = '') +
+  theme(legend.position = "bottom")
+p
+```
+
+O segundo mostra a proporção de decisões favoráveis no tempo.
+
+```{r decisao}
+tipos_decisao <- function(decisoes) {
+  negaram <- regex('negaram', ignore_case = TRUE)
+  parcial <- regex('parcial', ignore_case = TRUE)
+  deram <- regex('deram', ignore_case = TRUE)
+  case_when(
+    str_detect(decisoes, negaram) ~ 'negado',
+    str_detect(decisoes, parcial) ~ 'parcial',
+    str_detect(decisoes, deram) ~ 'provido',
+    TRUE ~ 'outros'
+  )
+}
+```
+
+
+```{r decisoes}
+partes_apelacoes <- d_partes %>% 
+  filter(tipo == 'apelado', str_detect(nome, '[Mm]inist')) %>% 
+  mutate(n_processo = str_replace_all(arq, '[^0-9]', '')) %>% 
+  select(n_processo)
+
+decisoes <- d_decisoes %>% 
+  mutate(n_processo = str_replace_all(arq, '[^0-9]', '')) %>% 
+  inner_join(partes_apelacoes, 'n_processo') %>% 
+  filter(situacao == 'Julgado') %>% 
+  distinct(n_processo, decisao) %>%
+  mutate(tipo_decisao = tipos_decisao(decisao)) %>% 
+  select(n_processo, tipo_decisao)
+```
+
+
+```{r graf2, fig.width=9}
+d_vis <- d_cjsg %>%
+  mutate(n_processo = str_replace_all(n_processo, '[^0-9]', '')) %>% 
+  inner_join(decisoes, 'n_processo') %>% 
+  arrange(desc(dmy(data_julgamento))) %>% 
+  distinct(n_processo, .keep_all = TRUE) %>% 
+  mutate(data = dmy(data_julgamento)) %>%
+  mutate(ano_mes = floor_date(data, 'month'))
+
+d_vis %>%
+  count(ano_mes, tipo_decisao) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup() %>%
+  ggplot(aes(x = ano_mes, y = prop, colour = tipo_decisao)) +
+  geom_line() +
+  geom_text(aes(y = 0.65, label = n, colour = NULL), 
+            data = count(d_vis, ano_mes)) +
+  scale_x_date(breaks = date_breaks('1 month'), 
+               labels = date_format("%b")) +
+  scale_y_continuous(labels = percent) +
+  labs(x = 'Órgão julgador', 
+       y = 'Proporção de processos por assunto',
+       fill = '') +
+  theme_bw(16)
+```
+
+O terceiro mostra a proporção de cada tipo de decisão em cada câmara.
+
+```{r graf3, fig.width=10, fig.height=5}
+p <- d_cjsg %>%
+  mutate(n_processo = str_replace_all(n_processo, '[^0-9]', '')) %>% 
+  distinct(n_processo, .keep_all = TRUE) %>% 
+  inner_join(distinct(decisoes, .keep_all = TRUE), 'n_processo') %>% 
+  count(orgao_julgador, tipo_decisao) %>%
+  mutate(ntot = sum(n), prop = n / ntot) %>%
+  ungroup() %>%
+  filter(ntot > 12) %>% 
+  mutate(num = parse_number(orgao_julgador),
+         num = sprintf('%02d', num)) %>% 
+  mutate(extra = str_detect(orgao_julgador, 'Extra'),
+         extra = ifelse(extra, 'Câmara Extraordinária', 
+                        'Câmara de Direito Criminal')) %>% 
+  ggplot(aes(x = num, fill = tipo_decisao, y = prop, group = ntot)) +
+  geom_col(colour = 'black', position = 'stack') +
+  facet_wrap(~extra, scales = 'free_x') +
+  theme_minimal(16) +
+  scale_y_continuous(labels = scales::percent) +
+  xlab('Órgão julgador') +
+  ylab('Proporção de processos\npor tipo de decisão') +
+  theme(legend.position = "bottom")
+p
+```
+
+Fim :D
+

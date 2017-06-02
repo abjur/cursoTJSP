@@ -1,0 +1,51 @@
+# Roteiro
+
+Semana passada:
+
+- Motivação
+    - Replicação do projeto das câmaras
+- Finalizando ferramental básico
+    - Tipos de objetos
+    - Funções
+    - Pipe
+- Transformação de dados com `dplyr` e `tidyr`
+    - Princípios de data tidying
+    - Os cinco verbos do `dplyr`
+    - `gather` e `spread`
+- Visualização de dados com `ggplot2`
+    - teoria sobre gráficos estatísticos
+    - principais geoms
+        - dispersão
+        - histograma
+        - boxplot
+        - barras
+    - facets
+    - temas
+- (se der tempo) analisando textos com `stringr`
+
+--------------------------------------------------
+
+```{r transform, echo=FALSE, fig.width=9}
+knitr::include_graphics('inputs/data-science-wrangle.png')
+```
+
+Hoje:
+
+- Leitura de dados
+    - readr e `data.table::fread()` para dados em texto
+    - haven para SAS, SPSS e Stata
+    - readxl, openxlsx
+- SQL, mongodb, spark
+- Conectando o R
+    - powerBI, QlikView
+- Outros outputs com RMarkdown
+    - Estáticos
+        - word
+        - pdf
+- htmlwidgets
+    - plotly
+    - leaflet
+    - DT
+- (se der tempo) shiny
+- (se der tempo) analisando textos com `stringr`
+

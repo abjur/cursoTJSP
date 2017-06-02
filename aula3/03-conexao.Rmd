@@ -1,0 +1,29 @@
+# Conectando o R
+
+## tableau, powerBI, QlikView, Excel
+
+Nao falaremos disso:
+
+- Tableau: https://onlinehelp.tableau.com/current/pro/desktop/en-us/r_connection_manage.html
+- Excel: https://bert-toolkit.com/
+
+## PowerBI
+
+https://powerbi.microsoft.com/en-us/documentation/powerbi-desktop-r-scripts/ 
+
+Basicamente:
+
+- Carregar base
+- No editor do dataset, adicionar scripts R, usando 'dataset' e 'output'
+
+## Qliksense
+
+http://www.computerworld.com/article/3118350/business-intelligence/qlik-to-add-r-python-support.html
+https://community.qlik.com/docs/DOC-6542 
+https://community.qlikview.com/thread/80239
+
+- Criar script R que recebe base de dados e salva outra base de dados
+- Rodar um script no Qliksense via comando EXECUTE
+    - via Rscript
+- Ler o output desse codigo.
+

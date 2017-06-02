@@ -1,0 +1,82 @@
+# Leitura no R
+
+```{r}
+library(tidyverse)
+```
+
+## Leitura de dados
+
+### readr e data.table::fread
+
+```{r}
+arq_mtcars <- readr_example("mtcars.csv")
+
+mtcars1 <- read_csv(arq_mtcars)
+mtcars2 <- data.table::fread(arq_mtcars)
+```
+
+### Haven
+
+```{r}
+library(haven)
+# SAS
+read_sas("inputs/mtcars.sas7bdat")
+write_sas(mtcars, "inputs/mtcars.sas7bdat")
+
+# SPSS
+read_sav("inputs/mtcars.sav")
+write_sav(mtcars, "inputs/mtcars.sav")
+
+# Stata
+read_dta("inputs/mtcars.dta")
+write_dta(mtcars, "inputs/mtcars.dta")
+```
+
+### readxl e openxlsx
+
+```{r}
+openxlsx::write.xlsx(mtcars, 'inputs/mtcars.xlsx')
+openxlsx::read.xlsx('inputs/mtcars.xlsx')
+readxl::read_excel('inputs/mtcars.xlsx')
+```
+
+## SQL
+
+### SQL
+
+https://cran.r-project.org/web/packages/dplyr/vignettes/databases.html
+
+```{r}
+data(diamonds)
+diamonds
+```
+
+```{r}
+my_db <- src_sqlite("inputs/my_db.sqlite3", create = TRUE)
+diamonds_sqlite <- copy_to(my_db, diamonds, temporary = FALSE)
+diamonds_sqlite <- tbl(my_db, "diamonds")
+diamonds_sqlite
+```
+
+```{r}
+tbl(my_db, sql("SELECT color, clarity FROM diamonds"))
+```
+
+Avaliação preguiçosa
+
+```{r}
+c1 <- filter(diamonds_sqlite, carat > 0.3)
+c2 <- select(c1, carat, clarity, table, price)
+c3 <- mutate(c2, price_adj = price * 10)
+c4 <- arrange(c3, price_adj)
+```
+
+```{r}
+c4
+```
+
+```{r}
+collect(c4)
+```
+
+
